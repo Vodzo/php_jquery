@@ -1,6 +1,8 @@
 # php_jquery
 write jquery in php
 
+note: the JS part doesn't check if a function exists.
+
 #Usage
 In PHP:
 ```php
