@@ -9,6 +9,8 @@ var pQuery = {
 	},
 	parse_object: function (object, that)
 	{
+		if(typeof(object.method) !== 'undefined')
+		{
 		for(y in object.method)
 			{
 			var methodName = object.method[y];
@@ -28,6 +30,10 @@ var pQuery = {
 						{
 						arguments.push(this.parse_object(child_object, selector));		
 						}
+					else if(child_object.selector !== undefined)
+						{
+						arguments.push(this.parse_object(child_object, selector));		
+						}
 					else
 						{
 						arguments.push(child_object);	
@@ -40,20 +46,10 @@ var pQuery = {
 				return $(object.selector)[methodName]();
 				}
 			}
+		}
+		else if(typeof(object.selector) !== 'undefined')
+		{
+			return $(object.selector);
+		}
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
