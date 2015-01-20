@@ -14,21 +14,28 @@ var pQuery = {
 		for(y in object.method)
 			{
 			var methodName = object.method[y];
+			var selector = $(object.selector);
+			if(that !== undefined)
+				{
+				selector = that;
+				}
 			if(object.arguments[y].length > 0)
 				{
 				var arguments = [];
-				var selector = $(object.selector);
-				if(that !== undefined)
-					{
-					selector = that;
-					}
 				
 				for(z in object.arguments[y])
 					{
 					var child_object = object.arguments[y][z];
 					if(child_object.arguments !== undefined && child_object.arguments.length > 0)
 						{
-						arguments.push(this.parse_object(child_object, selector));		
+						if(child_object.selector !== undefined)
+							{
+							arguments.push(this.parse_object(child_object));		
+							}
+						else
+							{
+							arguments.push(this.parse_object(child_object, selector));		
+							}
 						}
 					else if(child_object.selector !== undefined)
 						{
@@ -39,11 +46,26 @@ var pQuery = {
 						arguments.push(child_object);	
 						}
 					}
-				selector[methodName].apply(selector, arguments);
+					
+				if(y == (object.method.length - 1))
+					{
+					return selector[methodName].apply(selector, arguments);
+					}
+				else
+					{
+					selector[methodName].apply(selector, arguments);
+					}
 				}
 			else
 				{
-				return $(object.selector)[methodName]();
+				if(y == (object.method.length - 1))
+					{
+					return selector[methodName]();
+					}
+				else
+					{
+					selector[methodName]();
+					}
 				}
 			}
 		}
@@ -53,3 +75,4 @@ var pQuery = {
 		}
 	}
 }
+
